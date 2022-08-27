@@ -58,7 +58,7 @@ class cardSlot:
         print(f"This loop is numbered {loopNumber}, contains {player1Cards} from player 1, {player2Cards} from player 2, has a stack of {loopStack}, a player 1 outcome of {player1Outcome}, a player 2 outcome of {player2Outcome}, and {terrain} as terrain.")
         print("....function end....")
 
-
+Lock = Card("*", "None", "Lock The Loop", 0, 0, 0, "None")
 Spark = Card("Spark", "Red", "None", 1, 0, 0, "None")
 LightningBolt = Card("Lightning Bolt", "Yellow", "None", 3, 0, 0, "None")
 FluidCounter = Card("Fluid Counter", "Blue", "None", 0, 3, 0, "None")
@@ -81,35 +81,49 @@ def draw():
     seed7 = random.randint(1,30)
     seed8 = random.randint(1,30)
 
-    hand1 = [LightningBolt, LightningBolt, LightningBolt, Spark]
-    hand2 = [FluidCounter, FluidCounter, Nudge, Nudge]
+    hand1 = [LightningBolt, LightningBolt, LightningBolt, Spark, Lock]
+    hand2 = [FluidCounter, FluidCounter, Nudge, Nudge, Lock]
 #hard coded hands for now
 
 
 
 def submitA():
+    print("Your hand consists of: ")
+    while i < hand1.length - 1:
+        print({hand1[i - 1]})
+        i ++
     handCodeA = input("Submit your card selections in order for player A (1243) adding * to lock a loop instead (12*3)>> ")
     if handCodeA.length != 4:
         print("Something seems to be wrong with your submission, try again.")
         submitA()
 
 def submitB():
+    print("Your hand consists of: ")
+    while i < hand2.length - 1:
+        print({hand2[i - 1]})
+        i ++
     handCodeB = input("Submit your card selections in order for player B (1243) adding * to lock a loop instead (12*3)>> ")
     if handCodeB.length != 4:
         print("Something seems to be wrong with your submission, try again.")
         submitB()
 
 def calculateLoops():
-    slotA = cardSlot(handCodeA[0], handCodeB[0])
-    slotB = cardSlot(handCodeA[1], handCodeB[1])
-    slotC = cardSlot(handCodeA[2], handCodeB[2])
-    slotD = cardSlot(handCodeA[3], handCodeB[3])
-    if handCodeA[0] != "*":
+
+        slotA = cardSlot(hand1.handCodeA[0], hand2.handCodeB[0])
+        slotB = cardSlot(hand1.handCodeA[1], hand2.handCodeB[1])
+        slotC = cardSlot(hand1.handCodeA[2], hand2.handCodeB[2])
+        slotD = cardSlot(hand1.handCodeA[3], hand2.handCodeB[3])
+#not configured for locks yet
+
+
         #to do, loop calculation
 
 
 
 def main():
+    global hp1
+    global hp2
+
     deckA = [LightningBolt, LightningBolt, LightningBolt, LightningBolt]
     deckALive = []
     deckB = [FluidCounter, Nudge, FluidCounter, Nudge]
@@ -120,7 +134,7 @@ def main():
     print(f"Welcome to Creatures of Light and Darkness. Submit cards to slots left-to-right and by their listing in your hand.")
     print("For example, a hand with [Lightning Bolt], [Lightning Bolt], [Fluid Counter], [Fluid Counter] submitted as 1234 puts bolt in slots 1 and 2, and Counter in 3 and 4.")
     print("Whereas 1324 submits as Bolt, Counter, Bolt, Counter.")
-    print("If you wish to lock a loop, submit * instead of a card. Loops will automatically lock every five turns.")
+    print("If you wish to lock a loop, submit * instead of a card. Loops will automatically lock every five turns unless another loop is locked that turn, and will lock at first opprotunity starting with the tallest stack left to right.")
 
 
     while hp1 > 0 and hp2 > 0:

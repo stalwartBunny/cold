@@ -149,7 +149,11 @@ def calculateLoops():
     for char in handCodeB:
         if char is "*":
             char = Lock
-
+    #for char in handcodeA:
+    #    if char == 1:
+    #        hand.insert(0, hand.pop(0))
+    #    if char == 2:
+    #        hand.insert(1,     
     card1 = handCodeA[0]
     card2 = handCodeA[1]
     card3 = handCodeA[2]
@@ -159,10 +163,13 @@ def calculateLoops():
     card7 = handCodeB[2]
     card8 = handCodeB[3]
 
-    slotA = cardSlot(hand1.handCodeA[0], hand2.handCodeB[0])
-    slotB = cardSlot(hand1.handCodeA[1], hand2.handCodeB[1])
-    slotC = cardSlot(hand1.handCodeA[2], hand2.handCodeB[2])
-    slotD = cardSlot(hand1.handCodeA[3], hand2.handCodeB[3])
+    tempHand1 = [hand1[card1], hand1[card2], hand1[card3], hand1[card4]]
+    tempHand2 = [hand2[card5], hand2[card6], hand2[card7], hand2[card8]]
+
+    slotA = cardSlot(tempHand1[0], tempHand2[0])
+    slotB = cardSlot(tempHand1[1], tempHand2[1])
+    slotC = cardSlot(tempHand1[2], tempHand2[2])
+    slotD = cardSlot(tempHand1[3], tempHand2[3])
 
     player2outcome = slotA.player1Cards.damage - slotA.player2Cards.block
     player1Outcome = slotA.player2Cards.damage - slotA.player1Cards.block

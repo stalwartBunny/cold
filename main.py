@@ -14,6 +14,8 @@ slotD = []
 lockedLoops = []
 turnCount = 0
 terrainStack = []
+handCodeA = ""
+handCodeB = ""
 
 class Card:
 
@@ -40,7 +42,7 @@ class Card:
         print("....function end....")
 
 
-class cardSlot(self, player1Cards, player2Cards):
+class cardSlot():
     loopNumber = 1
     player1Cards = []
     player2Cards = []
@@ -81,6 +83,7 @@ def draw():
     seed7 = random.randint(1,30)
     seed8 = random.randint(1,30)
 
+    print("You *cough cough* drew some cards.")
     hand1 = [LightningBolt, LightningBolt, LightningBolt, Spark, Lock]
     hand2 = [FluidCounter, FluidCounter, Nudge, Nudge, Lock]
 #hard coded hands for now
@@ -88,15 +91,21 @@ def draw():
 
 
 def submitA():
+    global handCodeA
+    global hand1
+    handLength = 0
+
     lockCount = 0
     print("Your hand consists of: ")
-    while i < hand1.length - 1:
-        print({hand1[i - 1]})
-        i ++
+    for item in hand1:
+        print({item.name})
     handCodeA = input("Submit your card selections in order for player A (1243) adding * to lock a loop instead (12*3)>> ")
-    if handCodeA.length != 4:
-        print("too many cards in your submission, try again.")
+    for char in handCodeA:
+        handLength + 1
+    if handLength >=5:
+        print("Something seems to be wrong with your submission, try again.")
         submitA()
+
     for char in handCodeA:
         if char is "*":
             lockCount = lockCount + 1
@@ -106,13 +115,17 @@ def submitA():
 
 
 def submitB():
+    global handCodeB
+    global hand2
+    handLength = 0
     lockCount = 0
     print("Your hand consists of: ")
-    while i < hand2.length - 1:
-        print({hand2[i - 1]})
-        i ++
+    for item in hand2:
+        print({item.name})
     handCodeB = input("Submit your card selections in order for player B (1243) adding * to lock a loop instead (12*3)>> ")
-    if handCodeB.length != 4:
+    for char in handCodeA:
+        handLength + 1
+    if handLength >=5:
         print("Something seems to be wrong with your submission, try again.")
         submitB()
     for char in handCodeB:
@@ -125,14 +138,28 @@ def submitB():
 def calculateLoops():
     global hp1
     global hp2
+    global handCodeA
+    global handCodeB
+    global hand1
+    global hand2
 
     for char in handCodeA:
         if char is "*":
-            char = "-1"
+            char = Lock
     for char in handCodeB:
         if char is "*":
-            char = "-1"
-    slotA = cardSlot(hand1.handCodeA[0], hand2.handCodeB[0])
+            char = Lock
+
+    card1 = handCodeA[0]
+    card2 = handCodeA[1]
+    card3 = handCodeA[2]
+    card4 = handCodeA[3]
+    card5 = handCodeB[0]
+    card6 = handCodeB[1]
+    card7 = handCodeB[2]
+    card8 = handCodeB[3]
+
+    slotA = cardSlot(hand1[card1], hand2[0])
     slotB = cardSlot(hand1.handCodeA[1], hand2.handCodeB[1])
     slotC = cardSlot(hand1.handCodeA[2], hand2.handCodeB[2])
     slotD = cardSlot(hand1.handCodeA[3], hand2.handCodeB[3])
@@ -151,10 +178,15 @@ def calculateLoops():
 
     if player1Outcome > 0:
         hp1 = hp1 - player1Outcome
+        print(f"Oh no! Player 1 has lost {player1Outcome} life! They sit at {hp1} remaining hitpoints.")
+    else:
+        print(f"There wasn't enough impact to take damage. Player 1 hp is: {hp1}")
 
     if player2Outcome > 0:
         hp2 = hp2 - player2Outcome
-        #to do, loop calculation
+        print(f"Oh no! Player 2 has lost {player2Outcome} life! They sit at {hp2} remaining hitpoints.")
+    else:
+        print(f"There wasn't enough impact to take damage. Player 2 hp is: {hp2}")
 
 
 
@@ -187,3 +219,5 @@ def main():
     if hp2 <= 0:
         print("Player 2 has been defeated. Player 1 is the victor.")
         exit()
+
+main()

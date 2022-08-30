@@ -40,7 +40,7 @@ class Card:
         print("....function end....")
 
 
-class cardSlot:
+class cardSlot(self, player1Cards, player2Cards):
     loopNumber = 1
     player1Cards = []
     player2Cards = []
@@ -88,16 +88,25 @@ def draw():
 
 
 def submitA():
+    lockCount = 0
     print("Your hand consists of: ")
     while i < hand1.length - 1:
         print({hand1[i - 1]})
         i ++
     handCodeA = input("Submit your card selections in order for player A (1243) adding * to lock a loop instead (12*3)>> ")
     if handCodeA.length != 4:
-        print("Something seems to be wrong with your submission, try again.")
+        print("too many cards in your submission, try again.")
+        submitA()
+    for char in handCodeA:
+        if char is "*":
+            lockCount = lockCount + 1
+    if lockCount > 1:
+        print("You cannot submit more than one lock per round, try again.")
         submitA()
 
+
 def submitB():
+    lockCount = 0
     print("Your hand consists of: ")
     while i < hand2.length - 1:
         print({hand2[i - 1]})
@@ -106,16 +115,45 @@ def submitB():
     if handCodeB.length != 4:
         print("Something seems to be wrong with your submission, try again.")
         submitB()
+    for char in handCodeB:
+        if char is "*":
+            lockCount = lockCount + 1
+    if lockCount > 1:
+        print("You cannot submit more than one lock per round, try again.")
+        submitB()
 
 def calculateLoops():
+    global hp1
+    global hp2
 
-        slotA = cardSlot(hand1.handCodeA[0], hand2.handCodeB[0])
-        slotB = cardSlot(hand1.handCodeA[1], hand2.handCodeB[1])
-        slotC = cardSlot(hand1.handCodeA[2], hand2.handCodeB[2])
-        slotD = cardSlot(hand1.handCodeA[3], hand2.handCodeB[3])
-#not configured for locks yet
+    for char in handCodeA:
+        if char is "*":
+            char = "-1"
+    for char in handCodeB:
+        if char is "*":
+            char = "-1"
+    slotA = cardSlot(hand1.handCodeA[0], hand2.handCodeB[0])
+    slotB = cardSlot(hand1.handCodeA[1], hand2.handCodeB[1])
+    slotC = cardSlot(hand1.handCodeA[2], hand2.handCodeB[2])
+    slotD = cardSlot(hand1.handCodeA[3], hand2.handCodeB[3])
 
+    player2outcome = slotA.player1Cards.damage - slotA.player2Cards.block
+    player1Outcome = slotA.player2Cards.damage - slotA.player1Cards.block
 
+    player2Outcome = player2Outcome + slotB.player1Cards.damage - slotB.player2Cards.block
+    player1Outcome = player1Outcome + slotB.player2Cards.damage - slotB.player1Cards.block
+
+    player2Outcome = player2Outcome + slotC.player1Cards.damage - slotC.player2Cards.block
+    player1Outcome = player1Outcome + slotC.player2Cards.damage - slotC.player1Cards.block
+
+    player2Outcome = player2Outcome + slotD.player1Cards.damage - slotD.player2Cards.block
+    player1Outcome = player1Outcome + slotB.player2Cards.damage - slotB.player1Cards.block
+
+    if player1Outcome > 0:
+        hp1 = hp1 - player1Outcome
+
+    if player2Outcome > 0:
+        hp2 = hp2 - player2Outcome
         #to do, loop calculation
 
 

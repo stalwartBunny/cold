@@ -159,7 +159,7 @@ def calculateLoops():
     card7 = handCodeB[2]
     card8 = handCodeB[3]
 
-    slotA = cardSlot(hand1[card1], hand2[0])
+    slotA = cardSlot(hand1.handCodeA[0], hand2.handCodeB[0])
     slotB = cardSlot(hand1.handCodeA[1], hand2.handCodeB[1])
     slotC = cardSlot(hand1.handCodeA[2], hand2.handCodeB[2])
     slotD = cardSlot(hand1.handCodeA[3], hand2.handCodeB[3])

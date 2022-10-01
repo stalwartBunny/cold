@@ -27,7 +27,7 @@ class Card:
     regen = 0
     terrainEffects = []
 
-    def __init__(self, name, cardColor, nativeEffects, damage, block, regen, terrainEffects, ):
+    def __init__(self, name, cardColor, nativeEffects, damage, block, regen, terrainEffects):
         self.name = name
         self.cardColor = cardColor
         self.nativeEffects = nativeEffects
@@ -84,8 +84,8 @@ def draw():
     seed8 = random.randint(1,30)
 
     print("You *cough cough* drew some cards.")
-    hand1 = [LightningBolt, LightningBolt, LightningBolt, Spark, Lock]
-    hand2 = [FluidCounter, FluidCounter, Nudge, Nudge, Lock]
+    hand1 = [Lock, LightningBolt, LightningBolt, LightningBolt, Spark, Lock]
+    hand2 = [Lock, FluidCounter, FluidCounter, Nudge, Nudge, Lock]
 #hard coded hands for now
 
 
@@ -100,6 +100,11 @@ def submitA():
     for item in hand1:
         print({item.name})
     handCodeA = input("Submit your card selections in order for player A (1243) adding * to lock a loop instead (12*3)>> ")
+    handCodeA = list(map(int, str(handCodeA)))
+
+
+    print(type(handCodeA))
+    print(handCodeA)
     for char in handCodeA:
         handLength + 1
     if handLength >=5:
@@ -123,6 +128,7 @@ def submitB():
     for item in hand2:
         print({item.name})
     handCodeB = input("Submit your card selections in order for player B (1243) adding * to lock a loop instead (12*3)>> ")
+    handCodeB = list(map(int, str(handCodeB)))
     for char in handCodeA:
         handLength + 1
     if handLength >=5:
@@ -143,45 +149,42 @@ def calculateLoops():
     global hand1
     global hand2
 
-    for char in handCodeA:
-        if char is "*":
-            char = Lock
-    for char in handCodeB:
-        if char is "*":
-            char = Lock
-    #for char in handcodeA:
-    #    if char == 1:
-    #        hand.insert(0, hand.pop(0))
-    #    if char == 2:
-    #        hand.insert(1,     
-    card1 = handCodeA[0]
-    card2 = handCodeA[1]
-    card3 = handCodeA[2]
-    card4 = handCodeA[3]
-    card5 = handCodeB[0]
-    card6 = handCodeB[1]
-    card7 = handCodeB[2]
-    card8 = handCodeB[3]
 
-    tempHand1 = [hand1[card1], hand1[card2], hand1[card3], hand1[card4]]
-    tempHand2 = [hand2[card5], hand2[card6], hand2[card7], hand2[card8]]
+    print(handCodeA)
+    print(handCodeB)
 
-    slotA = cardSlot(tempHand1[0], tempHand2[0])
-    slotB = cardSlot(tempHand1[1], tempHand2[1])
-    slotC = cardSlot(tempHand1[2], tempHand2[2])
-    slotD = cardSlot(tempHand1[3], tempHand2[3])
 
-    player2outcome = slotA.player1Cards.damage - slotA.player2Cards.block
+    card1 = hand1[handCodeA[0]]
+    card2 = hand1[handCodeA[1]]
+    card3 = hand1[handCodeA[2]]
+    card4 = hand1[handCodeA[3]]
+    card5 = hand2[handCodeB[0]]
+    card6 = hand2[handCodeB[1]]
+    card7 = hand2[handCodeB[2]]
+    card8 = hand2[handCodeB[3]]
+
+    print(card1.name, card2.name, card3.name, card4.name)
+    print(card5.name, card6.name, card7.name, card8.name)
+
+
+    slotA = cardSlot(card1, card5)
+    slotB = cardSlot(card2, card6)
+    slotC = cardSlot(card3, card7)
+    slotD = cardSlot(card4, card8)
+
+    print(f"This is slot A, {slotA.player1Cards.name, slotA.player2Cards.name}, This is slot B {slotB.player1Cards.name, slotB.player2Cards.name} This is slotC {slotC.player1Cards.name, slotC.player2Cards.name}, This is slotD {slotD.player1Cards.name, slotD.player2Cards.name}")
+
+    player2Outcome = slotA.player1Cards.damage - slotA.player2Cards.block
     player1Outcome = slotA.player2Cards.damage - slotA.player1Cards.block
 
-    player2Outcome = player2Outcome + slotB.player1Cards.damage - slotB.player2Cards.block
-    player1Outcome = player1Outcome + slotB.player2Cards.damage - slotB.player1Cards.block
+    player2Outcome = player2Outcome + (slotB.player1Cards.damage - slotB.player2Cards.block)
+    player1Outcome = player1Outcome + (slotB.player2Cards.damage - slotB.player1Cards.block)
 
-    player2Outcome = player2Outcome + slotC.player1Cards.damage - slotC.player2Cards.block
-    player1Outcome = player1Outcome + slotC.player2Cards.damage - slotC.player1Cards.block
+    player2Outcome = player2Outcome + (slotC.player1Cards.damage - slotC.player2Cards.block)
+    player1Outcome = player1Outcome + (slotC.player2Cards.damage - slotC.player1Cards.block)
 
-    player2Outcome = player2Outcome + slotD.player1Cards.damage - slotD.player2Cards.block
-    player1Outcome = player1Outcome + slotB.player2Cards.damage - slotB.player1Cards.block
+    player2Outcome = player2Outcome + (slotD.player1Cards.damage - slotD.player2Cards.block)
+    player1Outcome = player1Outcome + (slotB.player2Cards.damage - slotB.player1Cards.block)
 
     if player1Outcome > 0:
         hp1 = hp1 - player1Outcome

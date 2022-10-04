@@ -73,21 +73,84 @@ Nudge.func()
 def draw():
     global hand1
     global hand2
+    global deckA
+    global deckB
+    global deckALive
+    global deckBLive
 
-    seed1 = random.randint(1,30)
-    seed2 = random.randint(1,30)
-    seed3 = random.randint(1,30)
-    seed4 = random.randint(1,30)
-    seed5 = random.randint(1,30)
-    seed6 = random.randint(1,30)
-    seed7 = random.randint(1,30)
-    seed8 = random.randint(1,30)
+    deckALiveLength = 0
+    deckBLiveLength = 0
+    for i in deckALive:
+        deckALiveLength = deckALiveLength + 1
+    for i in deckBLive:
+        deckBLiveLength = deckBLiveLength + 1
 
-    print("You *cough cough* drew some cards.")
-    hand1 = [Lock, LightningBolt, LightningBolt, LightningBolt, Spark, Lock]
-    hand2 = [Lock, FluidCounter, FluidCounter, Nudge, Nudge, Lock]
-#hard coded hands for now
+    seedLengthA = deckALiveLength - 1
+    seedLengthB = deckBLiveLength - 1
 
+    seedlistA = []
+    seedlistB = []
+
+    seedListLengthA = 0
+    seedListLengthB = 0
+    while seedListLengthA <= 4:
+        for i in range(4):
+            r=random.randint(1, seedLengthA)
+            if r not in seedlistA:
+                seedlistA.append(r)
+            for i in seedlistA:
+                seedListLengthA = seedListLengthA + 1
+
+    while seedListLengthB <= 4:
+        for i in range(4):
+            r=random.randint(1, seedLengthB)
+            if r not in seedlistB:
+                seedlistB.append(r)
+            for i in seedlistB:
+                seedListLengthB = seedListLengthB + 1
+
+    print(seedLengthA)
+    print(seedLengthB)
+    for thing in seedlistA:
+        print(thing)
+    for thing in seedlistB:
+        print(thing)
+
+    seed1 = seedlistA[0]
+    seed2 = seedlistA[1]
+    seed3 = seedlistA[2]
+    seed4 = seedlistA[3]
+    seed5 = seedlistB[0]
+    seed6 = seedlistB[1]
+    seed7 = seedlistB[2]
+    seed8 = seedlistB[3]
+
+    eliminationListA = [seed1, seed2, seed3, seed4]
+    eliminationListB = [seed5, seed6, seed7, seed8]
+    eliminationListA.sort(reverse = True)
+    eliminationListB.sort(reverse = True)
+    print(eliminationListA)
+    print(eliminationListB)
+    print("You drew some cards.")
+    hand1 = [Lock, deckALive[seed1], deckALive[seed2], deckALive[seed3], deckALive[seed4]]
+    hand2 = [Lock, deckBLive[seed5], deckBLive[seed6], deckBLive[seed7], deckBLive[seed8]]
+
+    for item in eliminationListA:
+        del deckALive[item]
+    for item in eliminationListB:
+        del deckBLive[item]
+
+    deckALiveLength = 0
+    deckBLiveLength = 0
+    for i in deckALive:
+        deckALiveLength = deckALiveLength + 1
+    for i in deckBLive:
+        deckBLiveLength = deckBLiveLength + 1
+
+    if deckALiveLength < 4:
+        deckALive = deckA
+    if deckBLiveLength < 4:
+        deckBLive = deckB
 
 
 def submitA():
@@ -99,7 +162,7 @@ def submitA():
     print("Your hand consists of: ")
     for item in hand1:
         print({item.name})
-    handCodeA = input("Submit your card selections in order for player A (1243) adding * to lock a loop instead (12*3)>> ")
+    handCodeA = input("Submit your card selections in order for player A (1243) adding 0 to lock a loop instead (1203)>> ")
     handCodeA = list(map(int, str(handCodeA)))
 
 
@@ -112,7 +175,7 @@ def submitA():
         submitA()
 
     for char in handCodeA:
-        if char is "*":
+        if char is "0":
             lockCount = lockCount + 1
     if lockCount > 1:
         print("You cannot submit more than one lock per round, try again.")
@@ -127,7 +190,7 @@ def submitB():
     print("Your hand consists of: ")
     for item in hand2:
         print({item.name})
-    handCodeB = input("Submit your card selections in order for player B (1243) adding * to lock a loop instead (12*3)>> ")
+    handCodeB = input("Submit your card selections in order for player B (1243) adding 0 to lock a loop instead (1203)>> ")
     handCodeB = list(map(int, str(handCodeB)))
     for char in handCodeA:
         handLength + 1
@@ -135,7 +198,7 @@ def submitB():
         print("Something seems to be wrong with your submission, try again.")
         submitB()
     for char in handCodeB:
-        if char is "*":
+        if char is "0":
             lockCount = lockCount + 1
     if lockCount > 1:
         print("You cannot submit more than one lock per round, try again.")
@@ -203,11 +266,17 @@ def calculateLoops():
 def main():
     global hp1
     global hp2
+    global deckA
+    global deckB
+    global deckALive
+    global deckBLive
 
-    deckA = [LightningBolt, LightningBolt, LightningBolt, LightningBolt]
-    deckALive = []
-    deckB = [FluidCounter, Nudge, FluidCounter, Nudge]
-    deckBLive = []
+    deckA = [Lock, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
+    #deckA = [LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark]
+    #deckALive = [LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark]
+    deckALive = [Lock, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
+    deckB = [Lock, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
+    deckBLive = [Lock, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
     handCodeA = 0
     handCodeB = 0
 
@@ -218,10 +287,10 @@ def main():
 
 
     while hp1 > 0 and hp2 > 0:
-        draw() #to do (correctly, current setup hardcodes hands)
+        draw()
         submitA()
         submitB()
-        calculateLoops() #to do
+        calculateLoops() #more left to do, only does attack and block
 
     if hp1 <= 0:
         print("Player 1 has lost. Player 2 is victorious.")

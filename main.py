@@ -65,10 +65,10 @@ Spark = Card("Spark", "Red", "None", 1, 0, 0, "None")
 LightningBolt = Card("Lightning Bolt", "Yellow", "None", 3, 0, 0, "None")
 FluidCounter = Card("Fluid Counter", "Blue", "None", 0, 3, 0, "None")
 Nudge = Card("Nudge", "Green", "None", 0, 1, 0, "None")
-LightningBolt.func()
-FluidCounter.func()
-Spark.func()
-Nudge.func()
+#LightningBolt.func()
+#FluidCounter.func()
+#Spark.func()
+#Nudge.func()
 
 def draw():
     global hand1
@@ -84,61 +84,22 @@ def draw():
         deckALiveLength = deckALiveLength + 1
     for i in deckBLive:
         deckBLiveLength = deckBLiveLength + 1
+    print(deckALiveLength)
+    print(deckBLiveLength)
 
-    seedLengthA = deckALiveLength - 1
-    seedLengthB = deckBLiveLength - 1
 
-    seedlistA = []
-    seedlistB = []
-
-    seedListLengthA = 0
-    seedListLengthB = 0
-    while seedListLengthA <= 4:
-        for i in range(4):
-            r=random.randint(1, seedLengthA)
-            if r not in seedlistA:
-                seedlistA.append(r)
-            for i in seedlistA:
-                seedListLengthA = seedListLengthA + 1
-
-    while seedListLengthB <= 4:
-        for i in range(4):
-            r=random.randint(1, seedLengthB)
-            if r not in seedlistB:
-                seedlistB.append(r)
-            for i in seedlistB:
-                seedListLengthB = seedListLengthB + 1
-
-    print(seedLengthA)
-    print(seedLengthB)
-    for thing in seedlistA:
-        print(thing)
-    for thing in seedlistB:
-        print(thing)
-
-    seed1 = seedlistA[0]
-    seed2 = seedlistA[1]
-    seed3 = seedlistA[2]
-    seed4 = seedlistA[3]
-    seed5 = seedlistB[0]
-    seed6 = seedlistB[1]
-    seed7 = seedlistB[2]
-    seed8 = seedlistB[3]
-
-    eliminationListA = [seed1, seed2, seed3, seed4]
-    eliminationListB = [seed5, seed6, seed7, seed8]
-    eliminationListA.sort(reverse = True)
-    eliminationListB.sort(reverse = True)
-    print(eliminationListA)
-    print(eliminationListB)
     print("You drew some cards.")
-    hand1 = [Lock, deckALive[seed1], deckALive[seed2], deckALive[seed3], deckALive[seed4]]
-    hand2 = [Lock, deckBLive[seed5], deckBLive[seed6], deckBLive[seed7], deckBLive[seed8]]
+    hand1 = [Lock, deckALive[0], deckALive[1], deckALive[2], deckALive[3]]
+    hand2 = [Lock, deckBLive[0], deckBLive[1], deckBLive[2], deckBLive[3]]
 
-    for item in eliminationListA:
-        del deckALive[item]
-    for item in eliminationListB:
-        del deckBLive[item]
+    del deckALive[3]
+    del deckALive[2]
+    del deckALive[1]
+    del deckALive[0]
+    del deckBLive[3]
+    del deckBLive[2]
+    del deckBLive[1]
+    del deckBLive[0]
 
     deckALiveLength = 0
     deckBLiveLength = 0
@@ -146,12 +107,18 @@ def draw():
         deckALiveLength = deckALiveLength + 1
     for i in deckBLive:
         deckBLiveLength = deckBLiveLength + 1
+    print(deckALiveLength)
+    print(deckBLiveLength)
 
     if deckALiveLength < 4:
         deckALive = deckA
+        random.shuffle(deckALive)
     if deckBLiveLength < 4:
         deckBLive = deckB
+        random.shuffle(deckBLive)
 
+    print(deckALiveLength)
+    print(deckBLiveLength)
 
 def submitA():
     global handCodeA
@@ -213,10 +180,6 @@ def calculateLoops():
     global hand2
 
 
-    print(handCodeA)
-    print(handCodeB)
-
-
     card1 = hand1[handCodeA[0]]
     card2 = hand1[handCodeA[1]]
     card3 = hand1[handCodeA[2]]
@@ -271,12 +234,14 @@ def main():
     global deckALive
     global deckBLive
 
-    deckA = [Lock, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
+    deckA = [LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
     #deckA = [LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark]
     #deckALive = [LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark]
-    deckALive = [Lock, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
-    deckB = [Lock, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
-    deckBLive = [Lock, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
+    deckALive = [LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
+    deckB = [FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
+    deckBLive = [FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
+    random.shuffle(deckALive)
+    random.shuffle(deckBLive)
     handCodeA = 0
     handCodeB = 0
 

@@ -73,19 +73,8 @@ Nudge = Card("Nudge", "Green", "None", 0, 1, 0, "None")
 def draw():
     global hand1
     global hand2
-    global deckA
-    global deckB
     global deckALive
     global deckBLive
-
-    deckALiveLength = 0
-    deckBLiveLength = 0
-    for i in deckALive:
-        deckALiveLength = deckALiveLength + 1
-    for i in deckBLive:
-        deckBLiveLength = deckBLiveLength + 1
-    print(deckALiveLength)
-    print(deckBLiveLength)
 
 
     print("You drew some cards.")
@@ -101,6 +90,14 @@ def draw():
     del deckBLive[1]
     del deckBLive[0]
 
+    shuffle()
+
+def shuffle():
+    global deckALive
+    global deckBLive
+    global deckB
+    global deckA
+
     deckALiveLength = 0
     deckBLiveLength = 0
     for i in deckALive:
@@ -109,16 +106,21 @@ def draw():
         deckBLiveLength = deckBLiveLength + 1
     print(deckALiveLength)
     print(deckBLiveLength)
-
+    print(f"this is deck A: {deckA}")
+    print(f"this is deck B: {deckB}")
     if deckALiveLength < 4:
         deckALive = deckA
         random.shuffle(deckALive)
+        print("Deck A has been reshuffled")
+        print(deckA)
+        print(deckALive)
     if deckBLiveLength < 4:
         deckBLive = deckB
         random.shuffle(deckBLive)
+        print("Deck B has been reshuffled")
+        print(deckB)
+        print(deckBLive)
 
-    print(deckALiveLength)
-    print(deckBLiveLength)
 
 def submitA():
     global handCodeA

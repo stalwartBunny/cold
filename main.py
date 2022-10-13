@@ -1,5 +1,6 @@
 from sys import exit
 import random
+import copy
 
 hp1 = 60
 hp2 = 60
@@ -16,6 +17,15 @@ turnCount = 0
 terrainStack = []
 handCodeA = ""
 handCodeB = ""
+
+loopStackAP1 = []
+loopstackAP2 = []
+loopStackBP1 = []
+loopstackBP2 = []
+loopStackCP1 = []
+loopstackCP2 = []
+loopStackDP1 = []
+loopstackDP2 = []
 
 class Card:
 
@@ -46,7 +56,6 @@ class cardSlot():
     loopNumber = 1
     player1Cards = []
     player2Cards = []
-    loopStack = []
     player1Outcome = []
     player2Outcome = []
     terrain = "None"
@@ -57,7 +66,7 @@ class cardSlot():
 
     def func(self):
         print("After calling the func method...")
-        print(f"This loop is numbered {loopNumber}, contains {player1Cards} from player 1, {player2Cards} from player 2, has a stack of {loopStack}, a player 1 outcome of {player1Outcome}, a player 2 outcome of {player2Outcome}, and {terrain} as terrain.")
+        print(f"This loop is numbered {loopNumber}, contains {player1Cards} from player 1, {player2Cards} from player 2, a player 1 outcome of {player1Outcome}, a player 2 outcome of {player2Outcome}, and {terrain} as terrain.")
         print("....function end....")
 
 Lock = Card("*", "None", "Lock The Loop", 0, 0, 0, "None")
@@ -104,22 +113,22 @@ def shuffle():
         deckALiveLength = deckALiveLength + 1
     for i in deckBLive:
         deckBLiveLength = deckBLiveLength + 1
-    print(deckALiveLength)
-    print(deckBLiveLength)
-    print(f"this is deck A: {deckA}")
-    print(f"this is deck B: {deckB}")
+    print(f"Deck A has a length of: {deckALiveLength}")
+    print(f"Deck B has a length of: {deckBLiveLength}")
+    #print(f"this is deck A: {deckA}")
+    #print(f"this is deck B: {deckB}")
     if deckALiveLength < 4:
-        deckALive = deckA
+        deckALive = copy.deepcopy(deckA)
         random.shuffle(deckALive)
         print("Deck A has been reshuffled")
-        print(deckA)
-        print(deckALive)
+    #    print(deckA)
+    #    print(deckALive)
     if deckBLiveLength < 4:
-        deckBLive = deckB
+        deckBLive = copy.deepcopy(deckB)
         random.shuffle(deckBLive)
         print("Deck B has been reshuffled")
-        print(deckB)
-        print(deckBLive)
+    #    print(deckB)
+    #    print(deckBLive)
 
 
 def submitA():
@@ -133,18 +142,20 @@ def submitA():
         print({item.name})
     handCodeA = input("Submit your card selections in order for player A (1243) adding 0 to lock a loop instead (1203)>> ")
     handCodeA = list(map(int, str(handCodeA)))
-
-
-    print(type(handCodeA))
-    print(handCodeA)
-    for char in handCodeA:
-        handLength + 1
+    #print(type(handCodeA))
+    #print(handCodeA)
+    for item in handCodeA:
+        handLength = handLength + 1
+    print(handLength)
     if handLength >=5:
-        print("Something seems to be wrong with your submission, try again.")
+        print("Something seems to be wrong with your submission, it's too long. Try again.")
+        submitA()
+    if handLength <= 3:
+        print("Something seems to be wrong with your submission, it's too short. Try again.")
         submitA()
 
-    for char in handCodeA:
-        if char is "0":
+    for item in handCodeA:
+        if item is "0":
             lockCount = lockCount + 1
     if lockCount > 1:
         print("You cannot submit more than one lock per round, try again.")
@@ -161,11 +172,19 @@ def submitB():
         print({item.name})
     handCodeB = input("Submit your card selections in order for player B (1243) adding 0 to lock a loop instead (1203)>> ")
     handCodeB = list(map(int, str(handCodeB)))
-    for char in handCodeA:
-        handLength + 1
+
+    for item in handCodeB:
+        handLength = handLength + 1
+    print(handLength)
+
     if handLength >=5:
-        print("Something seems to be wrong with your submission, try again.")
+        print("Something seems to be wrong with your submission, it's too long. Try again.")
         submitB()
+
+    if handLength < 4:
+        print("Something seems to be wrong with your submission, it's too short. Try again.")
+        submitB()
+
     for char in handCodeB:
         if char is "0":
             lockCount = lockCount + 1
@@ -180,6 +199,14 @@ def calculateLoops():
     global handCodeB
     global hand1
     global hand2
+    global loopStackAP1
+    global loopstackAP2
+    global loopStackBP1
+    global loopstackBP2
+    global loopStackCP1
+    global loopstackCP2
+    global loopStackDP1
+    global loopstackDP2
 
 
     card1 = hand1[handCodeA[0]]
@@ -214,6 +241,21 @@ def calculateLoops():
     player2Outcome = player2Outcome + (slotD.player1Cards.damage - slotD.player2Cards.block)
     player1Outcome = player1Outcome + (slotB.player2Cards.damage - slotB.player1Cards.block)
 
+    loopStackAP1.append(slotA.player1Cards)
+    loopstackAP2.append(slotA.player2Cards)
+
+    loopStackBP1.append(slotB.player1Cards)
+    loopstackBP2.append(slotB.player2Cards)
+
+    loopStackCP1.append(slotC.player1Cards)
+    loopstackCP2.append(slotC.player2Cards)
+
+    loopStackDP1.append(slotD.player1Cards)
+    loopstackDP2.append(slotD.player2Cards)
+
+    #print(f"This is loopstack A: {loopStackAP1}, {loopstackAP2}. This is loopstackB: {loopStackBP1}, {loopstackBP2}.")
+
+
     if player1Outcome > 0:
         hp1 = hp1 - player1Outcome
         print(f"Oh no! Player 1 has lost {player1Outcome} life! They sit at {hp1} remaining hitpoints.")
@@ -239,9 +281,9 @@ def main():
     deckA = [LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
     #deckA = [LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark]
     #deckALive = [LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark, LightningBolt, LightningBolt, LightningBolt, Spark, Spark, Spark]
-    deckALive = [LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt, LightningBolt]
+    deckALive = copy.deepcopy(deckA)
     deckB = [FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
-    deckBLive = [FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter, FluidCounter, Nudge, FluidCounter, Nudge, FluidCounter]
+    deckBLive = copy.deepcopy(deckB)
     random.shuffle(deckALive)
     random.shuffle(deckBLive)
     handCodeA = 0
